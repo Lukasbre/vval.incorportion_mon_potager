@@ -1,0 +1,53 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<h1 class="mb-4">Statistiques des signalements</h1>
+
+<h2>Nombre de signalements par parcelle</h2>
+<table class="table table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th>Parcelle</th>
+            <th>Signalements</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for ligne in stats_parcelles %}
+        <tr>
+            <td>{{ ligne.parcelle_id }}</td>
+            <td>{{ ligne.nb_signalements }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h2>Nombre de signalements par adhérent</h2>
+<table class="table table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th>Adhérent</th>
+            <th>Signalements</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for ligne in stats_adherents %}
+        <tr>
+            <td>{{ ligne.adherent }}</td>
+            <td>{{ ligne.nb_signalements }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<h2>Signalement le plus fréquent</h2>
+{% if signalement_frequent %}
+<div class="alert alert-success">
+    {{ signalement_frequent.type_signalement }} — {{ signalement_frequent.nb_signalements }} signalements
+</div>
+{% else %}
+<div class="alert alert-info">Aucun signalement enregistré.</div>
+{% endif %}
+
+<a class="btn btn-secondary" href="{{ url_for('show_signalement') }}">Retour</a>
+{% endblock %}
+

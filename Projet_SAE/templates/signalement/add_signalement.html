@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<h1 class="mb-4">Ajouter un signalement</h1>
+<form method="post" action="{{ url_for('valid_add_signalement') }}" class="row g-3">
+    <div class="col-12">
+        <label for="descriptif" class="form-label">Descriptif</label>
+        <textarea id="descriptif" name="descriptif" class="form-control" rows="3" required></textarea>
+    </div>
+    <div class="col-md-4">
+        <label for="date_signalement" class="form-label">Date</label>
+        <input type="date" id="date_signalement" name="date_signalement" class="form-control" required>
+    </div>
+    <div class="col-md-4">
+        <label for="type_signalement_id" class="form-label">Type</label>
+        <select id="type_signalement_id" name="type_signalement_id" class="form-select" required>
+            <option value="" disabled selected>Choisir un type</option>
+            {% for type in types %}
+                <option value="{{ type.id }}">{{ type.libelle }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-4">
+        <label for="adherent_id" class="form-label">Adhérent</label>
+        <select id="adherent_id" name="adherent_id" class="form-select" required>
+            <option value="" disabled selected>Choisir un adhérent</option>
+            {% for adherent in adherents %}
+                <option value="{{ adherent.id }}">{{ adherent.nom }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label for="parcelle_id" class="form-label">Parcelle</label>
+        <select id="parcelle_id" name="parcelle_id" class="form-select" required>
+            <option value="" disabled selected>Choisir une parcelle</option>
+            {% for parcelle in parcelles %}
+                <option value="{{ parcelle.id }}">{{ parcelle.id }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label for="photo" class="form-label">Photo (nom de fichier)</label>
+        <input type="text" id="photo" name="photo" class="form-control">
+    </div>
+    <div class="col-12 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Enregistrer</button>
+        <a class="btn btn-secondary" href="{{ url_for('show_signalement') }}">Annuler</a>
+    </div>
+</form>
+{% endblock %}

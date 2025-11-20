@@ -1,0 +1,302 @@
+#! /usr/bin/python
+# -*- coding:utf-8 -*-
+from flask import Flask, request, render_template, redirect, flash, url_for, g
+
+import pymysql.cursors
+
+app = Flask(__name__)
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.secret_key = 'une cle(token) : grain de sel(any random string)'
+
+# mysql --user=??? --password=??? --host=ASUSVAL.local --database=sae_mon_potager
+
+def get_db():
+    if 'db' not in g:
+        g.db = pymysql.connect(
+            host="???",
+            user="???",
+            password="???",
+            database="sae_mon_potager",
+            charset='utf8mb4',
+            cursorclass=pymysql.cursors.DictCursor
+        )
+    return g.db
+
+
+@app.teardown_appcontext
+def teardown_db(exception):
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
+
+
+############################# ACCUEIL #############################
+
+@app.route('/', methods=['GET'])
+def show_accueil():
+    return render_template('index.html')
+
+
+############################# SIGNALEMENTS #############################
+
+@app.route('/signalement/show')
+def show_signalement():
+    mycursor = get_db().cursor()
+    sql = '''
+    SELECT s.id_signalement AS id,
+        s.descriptif,
+        s.photo,
+        s.date_signalement,
+        ts.libelle_type_signalement AS type_signalement,
+        a.nom AS adherent,
+        c.parcelle_id
+    FROM signalement s
+    JOIN type_signalement ts ON ts.id_type_signalement = s.type_signalement_id
+    JOIN adherent a ON a.id_adherent = s.adherent_id
+    LEFT JOIN correspond c ON c.signalement_id = s.id_signalement
+    ORDER BY s.id_signalement;
+    '''
+    mycursor.execute(sql)
+    signalements = mycursor.fetchall()
+    return render_template('signalement/show_signalement.html', signalements=signalements)
+
+
+@app.route('/signalement/add', methods=['GET'])
+def add_signalement():
+    mycursor = get_db().cursor()
+    mycursor.execute('SELECT id_type_signalement AS id, libelle_type_signalement AS libelle FROM type_signalement ORDER BY libelle_type_signalement;')
+    types = mycursor.fetchall()
+    mycursor.execute('SELECT id_adherent AS id, nom FROM adherent ORDER BY nom;')
+    adherents = mycursor.fetchall()
+    mycursor.execute('SELECT id_parcelle AS id FROM parcelle ORDER BY id_parcelle;')
+    parcelles = mycursor.fetchall()
+    return render_template('signalement/add_signalement.html', types=types, adherents=adherents, parcelles=parcelles)
+
+
+@app.route('/signalement/add', methods=['POST'])
+def valid_add_signalement():
+    descriptif = request.form.get('descriptif')
+    photo = request.form.get('photo') or None
+    date_signalement = request.form.get('date_signalement')
+    type_signalement_id = request.form.get('type_signalement_id')
+    adherent_id = request.form.get('adherent_id')
+    parcelle_id = request.form.get('parcelle_id')
+
+    mycursor = get_db().cursor()
+    sql = '''
+    INSERT INTO signalement (descriptif, photo, date_signalement, type_signalement_id, adherent_id)
+    VALUES (%s, %s, %s, %s, %s);
+    '''
+    mycursor.execute(sql, (descriptif, photo, date_signalement, type_signalement_id, adherent_id))
+    signalement_id = mycursor.lastrowid
+
+    mycursor.execute('INSERT INTO correspond (parcelle_id, signalement_id) VALUES (%s, %s);', (parcelle_id, signalement_id))
+    get_db().commit()
+
+    message = 'Signalement ajouté'
+    flash(message, 'alert-success')
+    return redirect('/signalement/show')
+
+
+@app.route('/signalement/delete', methods=['POST'])
+def delete_signalement():
+    signalement_id = request.form.get('id')
+    mycursor = get_db().cursor()
+    mycursor.execute('DELETE FROM correspond WHERE signalement_id = %s;', (signalement_id,))
+    mycursor.execute('DELETE FROM signalement WHERE id_signalement = %s;', (signalement_id,))
+    get_db().commit()
+
+    message = 'Signalement supprimé, id : ' + signalement_id
+    flash(message, 'alert-warning')
+    return redirect('/signalement/show')
+
+
+@app.route('/signalement/edit', methods=['GET'])
+def edit_signalement():
+    signalement_id = request.args.get('id')
+    mycursor = get_db().cursor()
+    sql = '''
+    SELECT s.id_signalement AS id,
+        s.descriptif,
+        s.photo,
+        s.date_signalement,
+        s.type_signalement_id,
+        s.adherent_id,
+        c.parcelle_id
+    FROM signalement s
+    LEFT JOIN correspond c ON c.signalement_id = s.id_signalement
+    WHERE s.id_signalement = %s;
+    '''
+    mycursor.execute(sql, (signalement_id,))
+    signalement = mycursor.fetchone()
+
+    mycursor.execute('SELECT id_type_signalement AS id, libelle_type_signalement AS libelle FROM type_signalement ORDER BY libelle_type_signalement;')
+    types = mycursor.fetchall()
+    mycursor.execute('SELECT id_adherent AS id, nom FROM adherent ORDER BY nom;')
+    adherents = mycursor.fetchall()
+    mycursor.execute('SELECT id_parcelle AS id FROM parcelle ORDER BY id_parcelle;')
+    parcelles = mycursor.fetchall()
+
+    return render_template('signalement/edit_signalement.html', signalement=signalement, types=types, adherents=adherents, parcelles=parcelles)
+
+
+@app.route('/signalement/edit', methods=['POST'])
+def valid_edit_signalement():
+    signalement_id = request.form.get('id')
+    descriptif = request.form.get('descriptif')
+    photo = request.form.get('photo') or None
+    date_signalement = request.form.get('date_signalement')
+    type_signalement_id = request.form.get('type_signalement_id')
+    adherent_id = request.form.get('adherent_id')
+    parcelle_id = request.form.get('parcelle_id')
+
+    mycursor = get_db().cursor()
+    sql = '''
+    UPDATE signalement
+    SET descriptif = %s,
+        photo = %s,
+        date_signalement = %s,
+        type_signalement_id = %s,
+        adherent_id = %s
+    WHERE id_signalement = %s;
+    '''
+    mycursor.execute(sql, (descriptif, photo, date_signalement, type_signalement_id, adherent_id, signalement_id))
+    mycursor.execute('UPDATE correspond SET parcelle_id = %s WHERE signalement_id = %s;', (parcelle_id, signalement_id))
+    if mycursor.rowcount == 0:
+        mycursor.execute('INSERT INTO correspond (parcelle_id, signalement_id) VALUES (%s, %s);', (parcelle_id, signalement_id))
+    get_db().commit()
+
+    message = 'Signalement modifié'
+    flash(message, 'alert-success')
+    return redirect('/signalement/show')
+
+
+@app.route('/signalement/calcul')
+def calcul_signalement():
+    mycursor = get_db().cursor()
+
+    sql_parcelles = '''
+    SELECT p.id_parcelle AS parcelle_id,
+    COUNT(c.signalement_id) AS nb_signalements
+    FROM parcelle p
+    LEFT JOIN correspond c ON c.parcelle_id = p.id_parcelle
+    GROUP BY p.id_parcelle
+    ORDER BY p.id_parcelle;
+    '''
+    mycursor.execute(sql_parcelles)
+    stats_parcelles = mycursor.fetchall()
+
+    sql_adherents = '''
+    SELECT a.nom AS adherent,
+    COUNT(s.id_signalement) AS nb_signalements
+    FROM adherent a
+    LEFT JOIN signalement s ON s.adherent_id = a.id_adherent
+    GROUP BY a.id_adherent
+    ORDER BY nb_signalements DESC;
+    '''
+    mycursor.execute(sql_adherents)
+    stats_adherents = mycursor.fetchall()
+
+    sql_top = '''
+    SELECT ts.libelle_type_signalement AS type_signalement,
+    COUNT(s.id_signalement) AS nb_signalements
+    FROM signalement s
+    JOIN type_signalement ts ON ts.id_type_signalement = s.type_signalement_id
+    GROUP BY ts.id_type_signalement
+    ORDER BY nb_signalements DESC
+    LIMIT 1;
+    '''
+    mycursor.execute(sql_top)
+    signalement_frequent = mycursor.fetchone()
+
+    return render_template('signalement/calcul_signalement.html', stats_parcelles=stats_parcelles, stats_adherents=stats_adherents, signalement_frequent=signalement_frequent)
+
+
+############################# PRODUIT #############################
+
+@app.route('/produit/show')
+def show_produits():
+    mycursor = get_db().cursor()
+    sql = ''' SELECT id_produit AS id, libelle_produit AS libelle, prix_produit AS prix, categorie_id \
+    FROM produit
+    ORDER BY id_produit;'''
+    mycursor.execute(sql)
+    liste_produits = mycursor.fetchall()
+    return render_template('produit/show_produit.html', produits=liste_produits)
+
+
+@app.route('/produit/add', methods=['GET'])
+def add_produit():
+    print('''affichage du formulaire pour saisir un produit''')
+    return render_template('produit/add_produit.html')
+
+@app.route('/produit/delete')
+def delete_produit():
+    print('''suppression d'un produit''')
+    id=request.args.get('id',0)
+    print(id)
+    mycursor = get_db().cursor()
+    tuple_param=(id)
+    sql="DELETE FROM produit WHERE id_produit=%s;"
+    mycursor.execute(sql,tuple_param)
+
+    get_db().commit()
+    print(request.args)
+    print(request.args.get('id'))
+    id = request.args.get('id', 0)
+    return redirect('/produit/show')
+
+@app.route('/produit/edit', methods=['GET'])
+def edit_produit():
+    print('''affichage du formulaire pour modifier un produit''')
+    print(request.args)
+    print(request.args.get('id'))
+    id=request.args.get('id')
+    mycursor = get_db().cursor()
+    sql=''' SELECT id_produit AS id, libelle_produit AS libelle, prix_produit AS prix, categorie_id
+    FROM produit
+    WHERE id_produit=%s;'''
+    tuple_param=(id)
+    mycursor.execute(sql,tuple_param)
+    produit = mycursor.fetchone()
+    return render_template('produit/edit_produit.html', produit=produit)
+
+
+@app.route('/produit/add', methods=['POST'])
+def valid_add_produit():
+    print('''ajout du produit dans le tableau''')
+    libelle = request.form.get('libelle')
+    prix = request.form.get('prix')
+    categorie_id = request.form.get('categorie_id')
+    message = 'libelle :' + libelle + ' - prix :' + prix + ' - categorie :' + categorie_id
+    print(message)
+    mycursor = get_db().cursor()
+    tuple_param=(libelle, prix, categorie_id)
+    sql="INSERT INTO produit(id_produit, libelle_produit, prix_produit, categorie_id) VALUES (NULL, %s, %s, %s);"
+    mycursor.execute(sql,tuple_param)
+    get_db().commit()
+    return redirect('/produit/show')
+
+@app.route('/produit/edit', methods=['POST'])
+def valid_edit_produit():
+    print('''modification du produit dans le tableau''')
+    id = request.form.get('id')
+    libelle = request.form.get('libelle')
+    prix = request.form.get('prix')
+    categorie_id = request.form.get('categorie_id')
+    message = 'libelle :' + libelle + ' - prix :' + prix + ' pour le produit d identifiant :' + id
+    print(message)
+    mycursor = get_db().cursor()
+    tuple_param=(libelle, prix, categorie_id, id)
+    sql="UPDATE produit SET libelle_produit = %s, prix_produit = %s, categorie_id = %s WHERE id_produit=%s;"
+    mycursor.execute(sql,tuple_param)
+    get_db().commit()
+    return redirect('/produit/show')
+
+
+############################# ACTION #############################
+
+############################# EST PLANTE / EST RECOLTE #############################
+
+if __name__ == '__main__':
+    app.run(debug=True)

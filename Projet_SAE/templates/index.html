@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="jumbotron jumbotron-fluid bg-success text-white rounded mb-5">
+        <div class="container">
+            <h1 class="display-3">Gestion du Potager</h1>
+            <p class="lead">Bienvenue sur l'interface du potager partagé</p>
+        </div>
+    </div>
+
+    <div class="card shadow-lg">
+        <div class="card-header bg-dark text-white">
+            <h2 class="h4 mb-0">Équipe de développement</h2>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Prénom</th>
+                            <th scope="col">Nom</th>
+                            <th scope="col" class="text-center">Groupe</th>
+                            <th scope="col">Sujet</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Valentin</td>
+                            <td>Beuret</td>
+                            <td class="text-center">
+                                <span class="badge bg-primary">1</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-danger">Signalement</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>[Prénom]</td>
+                            <td>[Nom]</td>
+                            <td class="text-center">
+                                <span class="badge bg-info">[Groupe]</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary">[Sujet]</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>[Prénom]</td>
+                            <td>[Nom]</td>
+                            <td class="text-center">
+                                <span class="badge bg-info">[Groupe]</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary">[Sujet]</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>[Prénom]</td>
+                            <td>[Nom]</td>
+                            <td class="text-center">
+                                <span class="badge bg-info">[Groupe]</span>
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary">[Sujet]</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
