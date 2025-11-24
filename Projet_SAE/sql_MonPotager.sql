@@ -174,12 +174,19 @@ INSERT INTO adherent VALUES
 (1, 'Beuret', '3 rue Fernand Papillon', '0601020304'),
 (2, 'Bendiaf', '2 rue Bossière', '0769302665'),
 (3, 'Decailloz', '14 rue de la Cavalerie', '0708091011'),
-(4, 'Bajic', '11 rue des Epiceas', '0651369236');
+(4, 'Bajic', '11 rue des Epiceas', '0651369236'),
+(5, 'Martin', '5 rue des Lilas', '0622334455'),
+(6, 'Durand', '7 avenue du Parc', '0677889900'),
+(7, 'Lemoine', '9 boulevard Victor', '0611223344'),
+(8, 'Dubois', '12 rue de la Gare', '0655443322');
 
 INSERT INTO parcelle VALUES
 (1, 300, 300),
 (2, 450, 200),
-(3, 225, 280);
+(3, 225, 280),
+(4, 500, 400),
+(5, 350, 350),
+(6, 600, 500);
 
 INSERT INTO type_signalement VALUES
 (1, 'Problème d’irrigation'),
@@ -191,9 +198,12 @@ INSERT INTO type_signalement VALUES
 (7, 'Infestation insecte'),
 (8, 'Plante malade'),
 (9, 'Vol de plante'),
-(10, 'Polution'),
-(11, 'Ashèchement'),
-(12, 'Sol inondé');
+(10, 'Pollution'),
+(11, 'Assèchement'),
+(12, 'Sol inondé'),
+(13, 'Mauvaises herbes'),
+(14, 'Nutriments insuffisants'),
+(15, 'Moisissure');
 
 INSERT INTO type_sol VALUES
 (1, 'Argileux'),
@@ -203,67 +213,61 @@ INSERT INTO type_sol VALUES
 (5, 'Humifère'),
 (6, 'Riche'),
 (7, 'Pauvre'),
-(8, 'Rocailleux');
+(8, 'Rocailleux'),
+(9, 'Tourbeux'),
+(10, 'Volcanique');
 
 INSERT INTO categorie VALUES
 (1, 'Légume'),
-(2, 'Fruit');
+(2, 'Fruit'),
+(3, 'Plante aromatique');
 
 INSERT INTO type_action VALUES
 (1, 'Désherber'),
 (2, 'Arroser'),
 (3, 'Labourer'),
 (4, 'Nettoyer'),
-(5, 'Verifier'),
-(6, 'Fertiliser');
+(5, 'Vérifier'),
+(6, 'Fertiliser'),
+(7, 'Tailler'),
+(8, 'Récolter'),
+(9, 'Semer');
 
 INSERT INTO type_produit VALUES
-(1,'Cucurbitacée'),
-(2,'Solanacée'),
-(3,'Légumineuse'),
-(4,'Brassicacée'),
-(5,'Alliacée'),
-(6,'Fruit à noyau'),
-(7,'Fruit à pépins'),
-(8,'Fruit à coque'),
-(9,'Fruit monosperme'),
-(10,'Racine tuberculeuse'),
-(11,'Feuille potagère'),
-(12,'Plante aromatique'),
-(13,'Céréale'),
-(14,'Plante oléagineuse'),
-(15,'Plante médicinale');
+(1, 'Cucurbitacée'),
+(2, 'Solanacée'),
+(3, 'Légumineuse'),
+(4, 'Brassicacée'),
+(5, 'Alliacée'),
+(6, 'Fruit à noyau'),
+(7, 'Fruit à pépins'),
+(8, 'Fruit à coque'),
+(9, 'Fruit monosperme'),
+(10, 'Racine tuberculeuse'),
+(11, 'Feuille potagère'),
+(12, 'Plante aromatique'),
+(13, 'Céréale'),
+(14, 'Plante oléagineuse'),
+(15, 'Plante médicinale'),
+(16, 'Fleur comestible'),
+(17, 'Baie sauvage');
 
 INSERT INTO date_action VALUES
-(1,'2025-03-01'),
-(2,'2025-03-15'),
-(3,'2025-04-01'),
-(4,'2025-04-10'),
-(5,'2025-05-01');
+(1,'2025-03-01'),(2,'2025-03-15'),(3,'2025-04-01'),
+(4,'2025-04-10'),(5,'2025-05-01'),(6,'2025-05-15'),
+(7,'2025-06-01'),(8,'2025-06-10'),(9,'2025-06-20'),(10,'2025-07-01');
 
 INSERT INTO date_plantation VALUES
-(1,'2025-03-05'),
-(2,'2025-03-20'),
-(3,'2025-04-05'),
-(4,'2025-04-15'),
-(5,'2025-03-25'),
-(6,'2025-04-10'),
-(7,'2025-04-20'),
-(8,'2025-05-01'),
-(9,'2025-05-10'),
-(10,'2025-05-20');
+(1,'2025-03-05'),(2,'2025-03-20'),(3,'2025-04-05'),
+(4,'2025-04-15'),(5,'2025-03-25'),(6,'2025-04-10'),
+(7,'2025-04-20'),(8,'2025-05-01'),(9,'2025-05-10'),
+(10,'2025-05-20'),(11,'2025-06-01'),(12,'2025-06-15');
 
 INSERT INTO date_recolte VALUES
-(1,'2025-06-01'),
-(2,'2025-06-15'),
-(3,'2025-07-01'),
-(4,'2025-07-15'),
-(5,'2025-06-20'),
-(6,'2025-07-05'),
-(7,'2025-07-20'),
-(8,'2025-08-05'),
-(9,'2025-08-15'),
-(10,'2025-09-01');
+(1,'2025-06-01'),(2,'2025-06-15'),(3,'2025-07-01'),
+(4,'2025-07-15'),(5,'2025-06-20'),(6,'2025-07-05'),
+(7,'2025-07-20'),(8,'2025-08-05'),(9,'2025-08-15'),
+(10,'2025-09-01'),(11,'2025-09-15'),(12,'2025-10-01');
 
 INSERT INTO produit VALUES
 (1,'Tomate','Mars-Avril','Juin-Juillet',2, 2.50),
@@ -296,131 +300,53 @@ INSERT INTO produit VALUES
 (28,'Oignon','Mars-Avril','Août-Septembre',1, 1.50),
 (29,'Ail','Mars-Avril','Juillet-Août',1, 2.00),
 (30,'Navet','Mars-Avril','Juin',1, 1.60),
-(31,'Chou de Bruxelles','Mars-Avril','Septembre-Octobre',1, 2.20);
+(31,'Chou de Bruxelles','Mars-Avril','Septembre-Octobre',1, 2.20),
+(32,'Basilic','Mars-Avril','Juin',3, 1.10),
+(33,'Thym','Mars-Avril','Mai-Juin',3, 1.50),
+(34,'Menthe','Mars-Avril','Mai-Juin',3, 1.30),
+(35,'Origan','Mars-Avril','Mai-Juin',3, 1.20);
 
-INSERT INTO signalement VALUES
-(1,'Sol trop sec à l’extrémité de la parcelle','photo1.jpg','2025-03-10',2,1),
-(2,'Présence de pierres','photo2.jpg','2025-03-12',4,2),
-(3,'Irrigation défectueuse','photo3.jpg','2025-04-01',1,3);
-
-INSERT INTO action VALUES
-(1,'Arroser parcelle 1',2,1,2),
-(2,'Désherber parcelle 2',1,2,1),
-(3,'Labourer parcelle 3',3,3,3);
-
-INSERT INTO est_associe VALUES
-(1,1),
-(2,2),
-(3,3),
-(4,1);
-
-INSERT INTO posee VALUES
-(1,1),
-(2,2),
-(3,3);
-
-INSERT INTO est_plante VALUES
-(1,1,1),
-(1,2,2),
-(2,3,3),
-(3,1,4),
-(1,6,5),
-(1,7,6),
-(2,8,5),
-(2,9,6),
-(3,10,7),
-(3,11,8),
-(1,12,5),
-(2,13,6),
-(3,14,7),
-(1,15,8),
-(2,16,5),
-(3,17,6),
-(1,18,7),
-(2,19,8),
-(3,20,5),
-(1,21,6),
-(2,22,7),
-(3,23,8),
-(1,24,5),
-(2,25,6),
-(3,26,7),
-(1,27,8),
-(2,28,5),
-(3,29,6),
-(1,30,7),
-(2,31,8);
-
-INSERT INTO est_recolte VALUES
-(1,1,1,50),
-(1,2,2,30),
-(2,3,3,40),
-(1,6,5,60),
-(1,7,6,50),
-(2,8,5,40),
-(2,9,6,30),
-(3,10,7,20),
-(3,11,8,25),
-(1,12,5,35),
-(2,13,6,45),
-(3,14,7,55),
-(1,15,8,40),
-(2,16,5,50),
-(3,17,6,60),
-(1,18,7,20),
-(2,19,8,25),
-(3,20,5,30),
-(1,21,6,35),
-(2,22,7,40),
-(3,23,8,45),
-(1,24,5,50),
-(2,25,6,55),
-(3,26,7,60),
-(1,27,8,65),
-(2,28,5,20),
-(3,29,6,25),
-(1,30,7,30),
-(2,31,8,35);
+INSERT INTO signalement (descriptif, photo, date_signalement, type_signalement_id, adherent_id) VALUES
+('Irrigation défectueuse','photo1.jpg','2025-06-01',1,1),
+('Sol trop sec','photo2.jpg','2025-06-03',2,2),
+('Plante malade','photo3.jpg','2025-06-05',8,3),
+('Présence de pierres','photo4.jpg','2025-06-07',4,4),
+('Infestation insecte','photo5.jpg','2025-06-10',7,5),
+('Vol de plante','photo6.jpg','2025-06-12',9,6),
+('Mauvaises herbes','photo7.jpg','2025-06-14',13,7),
+('Sol inondé','photo8.jpg','2025-06-16',12,8);
 
 INSERT INTO correspond VALUES
-(1,1),
-(2,2),
-(3,3);
+(1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(1,7),(2,8);
+
+INSERT INTO est_associe VALUES
+(1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,1),(8,2);
+
+INSERT INTO posee VALUES
+(1,1),(1,5),(2,2),(3,3),(4,4),(5,6),(6,7),(2,8);
+
+INSERT INTO est_plante VALUES
+(1,1,1),(1,2,2),(2,3,3),(3,4,4),(4,5,5),(5,6,6),(6,7,7),(2,8,8);
+
+INSERT INTO est_recolte VALUES
+(1,1,1,10),(1,2,2,15),(2,3,3,20),(3,4,4,25),(4,5,5,30),(5,6,6,35),(6,7,7,40),(2,8,8,12);
+
+INSERT INTO action (libelle_action, date_action_id, parcelle_id, type_action_id) VALUES
+('Arrosage parcelle 1',1,1,2),
+('Désherbage parcelle 2',2,2,1),
+('Labour parcelle 3',3,3,3),
+('Nettoyage parcelle 4',4,4,4),
+('Fertilisation parcelle 5',5,5,6),
+('Récolte parcelle 6',6,6,8),
+('Semis parcelle 1',7,1,9),
+('Vérification parcelle 2',8,2,5);
 
 INSERT INTO effectue VALUES
-(1,1),
-(2,2),
-(3,3);
+(1,1),(2,2),(3,3),(4,4),(5,5),(6,6),(7,7),(8,8);
 
 INSERT INTO classe_dans VALUES
-(1,2),
-(2,10),
-(3,1),
-(4,6),
-(5,7),
-(6,2),
-(7,11),
-(8,11),
-(9,10),
-(10,10),
-(11,4),
-(12,4),
-(13,2),
-(14,1),
-(15,1),
-(16,6),
-(17,6),
-(18,7),
-(19,7),
-(20,7),
-(21,7),
-(22,7),
-(23,6),
-(24,6),
-(25,6),
-(26,6),
-(27,6),
-(28,7),
-(29,5),
-(30,5),
-(31,5);
+(1,2),(2,1),(3,1),(4,2),(5,2),(6,1),(7,1),(8,1),
+(9,1),(10,1),(11,1),(12,1),(13,1),(14,1),(15,1),
+(16,2),(17,2),(18,2),(19,2),(20,2),(21,2),(22,2),
+(23,2),(24,2),(25,2),(26,2),(27,1),(28,1),(29,1),
+(30,1),(31,1),(32,3),(33,3),(34,3),(35,3);

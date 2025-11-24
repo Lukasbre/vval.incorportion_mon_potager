@@ -1,53 +1,92 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-<h1 class="mb-4">Statistiques des signalements</h1>
+<div class="container mt-5">
 
-<h2>Nombre de signalements par parcelle</h2>
-<table class="table table-bordered">
-    <thead class="table-light">
-        <tr>
-            <th>Parcelle</th>
-            <th>Signalements</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for ligne in stats_parcelles %}
-        <tr>
-            <td>{{ ligne.parcelle_id }}</td>
-            <td>{{ ligne.nb_signalements }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+    <h1 class="mb-4">Statistiques des signalements</h1>
 
-<h2>Nombre de signalements par adhérent</h2>
-<table class="table table-bordered">
-    <thead class="table-light">
-        <tr>
-            <th>Adhérent</th>
-            <th>Signalements</th>
-        </tr>
-    </thead>
-    <tbody>
-    {% for ligne in stats_adherents %}
-        <tr>
-            <td>{{ ligne.adherent }}</td>
-            <td>{{ ligne.nb_signalements }}</td>
-        </tr>
-    {% endfor %}
-    </tbody>
-</table>
+    <div class="card shadow-lg mb-4">
+        <div class="card-header bg-dark text-white">
+            <h2 class="h5 mb-0">Nombre de signalements par parcelle</h2>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Parcelle</th>
+                            <th>Signalements</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for ligne in stats_parcelles %}
+                        <tr>
+                            <td>{{ ligne.parcelle_id }}</td>
+                            <td>{{ ligne.nb_signalements }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-<h2>Signalement le plus fréquent</h2>
-{% if signalement_frequent %}
-<div class="alert alert-success">
-    {{ signalement_frequent.type_signalement }} — {{ signalement_frequent.nb_signalements }} signalements
+    <div class="card shadow-lg mb-4">
+        <div class="card-header bg-dark text-white">
+            <h2 class="h5 mb-0">Nombre de signalements par adhérent</h2>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Adhérent</th>
+                            <th>Signalements</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for ligne in stats_adherents %}
+                        <tr>
+                            <td>{{ ligne.adherent }}</td>
+                            <td>{{ ligne.nb_signalements }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-lg mb-4">
+        <div class="card-header bg-dark text-white">
+            <h2 class="h5 mb-0">Signalement le plus fréquent</h2>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Type de signalement</th>
+                            <th>Nombre de signalements</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% if signalement_frequent %}
+                        <tr>
+                            <td>{{ signalement_frequent.type_signalement }}</td>
+                            <td>{{ signalement_frequent.nb_signalements }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="2" class="text-center">Aucun signalement enregistré</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <a class="btn btn-secondary" href="{{ url_for('show_signalement') }}">Retour</a>
 </div>
-{% else %}
-<div class="alert alert-info">Aucun signalement enregistré.</div>
-{% endif %}
-
-<a class="btn btn-secondary" href="{{ url_for('show_signalement') }}">Retour</a>
 {% endblock %}
-

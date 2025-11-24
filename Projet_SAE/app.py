@@ -30,26 +30,28 @@ def teardown_db(exception):
         db.close()
 
 
-############################# ACCUEIL #############################
+############### ACCUEIL ###############
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def show_accueil():
     return render_template('index.html')
 
 
-############################# SIGNALEMENTS #############################
+############### SIGNALEMENT ###############
+
+############### SIGNALEMENT — SHOW ###############
 
 @app.route('/signalement/show')
 def show_signalement():
     mycursor = get_db().cursor()
     sql = '''
     SELECT s.id_signalement AS id,
-        s.descriptif,
-        s.photo,
-        s.date_signalement,
-        ts.libelle_type_signalement AS type_signalement,
-        a.nom AS adherent,
-        c.parcelle_id
+           s.descriptif,
+           s.photo,
+           s.date_signalement,
+           ts.libelle_type_signalement AS type_signalement,
+           a.nom AS adherent,
+           c.parcelle_id
     FROM signalement s
     JOIN type_signalement ts ON ts.id_type_signalement = s.type_signalement_id
     JOIN adherent a ON a.id_adherent = s.adherent_id
@@ -61,22 +63,28 @@ def show_signalement():
     return render_template('signalement/show_signalement.html', signalements=signalements)
 
 
+############### SIGNALEMENT — ADD ###############
+
 @app.route('/signalement/add', methods=['GET'])
 def add_signalement():
     mycursor = get_db().cursor()
+
     mycursor.execute('SELECT id_type_signalement AS id, libelle_type_signalement AS libelle FROM type_signalement ORDER BY libelle_type_signalement;')
     types = mycursor.fetchall()
+
     mycursor.execute('SELECT id_adherent AS id, nom FROM adherent ORDER BY nom;')
     adherents = mycursor.fetchall()
+
     mycursor.execute('SELECT id_parcelle AS id FROM parcelle ORDER BY id_parcelle;')
     parcelles = mycursor.fetchall()
+
     return render_template('signalement/add_signalement.html', types=types, adherents=adherents, parcelles=parcelles)
 
 
 @app.route('/signalement/add', methods=['POST'])
 def valid_add_signalement():
     descriptif = request.form.get('descriptif')
-    photo = request.form.get('photo') or None
+    photo = request.form.get('photo')
     date_signalement = request.form.get('date_signalement')
     type_signalement_id = request.form.get('type_signalement_id')
     adherent_id = request.form.get('adherent_id')
@@ -91,50 +99,58 @@ def valid_add_signalement():
     signalement_id = mycursor.lastrowid
 
     mycursor.execute('INSERT INTO correspond (parcelle_id, signalement_id) VALUES (%s, %s);', (parcelle_id, signalement_id))
+
     get_db().commit()
 
-    message = 'Signalement ajouté'
-    flash(message, 'alert-success')
+    flash('Signalement ajouté', 'alert-success')
     return redirect('/signalement/show')
 
+
+############### SIGNALEMENT — DELETE ###############
 
 @app.route('/signalement/delete', methods=['POST'])
 def delete_signalement():
-    signalement_id = request.form.get('id')
+    id = request.form.get('id')
+
     mycursor = get_db().cursor()
-    mycursor.execute('DELETE FROM correspond WHERE signalement_id = %s;', (signalement_id,))
-    mycursor.execute('DELETE FROM signalement WHERE id_signalement = %s;', (signalement_id,))
+    mycursor.execute('DELETE FROM correspond WHERE signalement_id = %s;', (id,))
+    mycursor.execute('DELETE FROM signalement WHERE id_signalement = %s;', (id,))
     get_db().commit()
 
-    message = 'Signalement supprimé, id : ' + signalement_id
-    flash(message, 'alert-warning')
+    flash(f'Signalement supprimé / id : {id}', 'alert-warning')
     return redirect('/signalement/show')
 
 
+############### SIGNALEMENT — EDIT ###############
+
 @app.route('/signalement/edit', methods=['GET'])
 def edit_signalement():
-    signalement_id = request.args.get('id')
+    id = request.args.get('id')
+
     mycursor = get_db().cursor()
+
     sql = '''
     SELECT s.id_signalement AS id,
-        s.descriptif,
-        s.photo,
-        s.date_signalement,
-        s.type_signalement_id,
-        s.adherent_id,
-        c.parcelle_id
+           s.descriptif,
+           s.photo,
+           s.date_signalement,
+           s.type_signalement_id,
+           s.adherent_id,
+           c.parcelle_id
     FROM signalement s
     LEFT JOIN correspond c ON c.signalement_id = s.id_signalement
     WHERE s.id_signalement = %s;
     '''
-    mycursor.execute(sql, (signalement_id,))
+    mycursor.execute(sql, (id,))
     signalement = mycursor.fetchone()
 
-    mycursor.execute('SELECT id_type_signalement AS id, libelle_type_signalement AS libelle FROM type_signalement ORDER BY libelle_type_signalement;')
+    mycursor.execute('SELECT id_type_signalement AS id, libelle_type_signalement AS libelle FROM type_signalement;')
     types = mycursor.fetchall()
-    mycursor.execute('SELECT id_adherent AS id, nom FROM adherent ORDER BY nom;')
+
+    mycursor.execute('SELECT id_adherent AS id, nom FROM adherent;')
     adherents = mycursor.fetchall()
-    mycursor.execute('SELECT id_parcelle AS id FROM parcelle ORDER BY id_parcelle;')
+
+    mycursor.execute('SELECT id_parcelle AS id FROM parcelle;')
     parcelles = mycursor.fetchall()
 
     return render_template('signalement/edit_signalement.html', signalement=signalement, types=types, adherents=adherents, parcelles=parcelles)
@@ -142,15 +158,16 @@ def edit_signalement():
 
 @app.route('/signalement/edit', methods=['POST'])
 def valid_edit_signalement():
-    signalement_id = request.form.get('id')
+    id = request.form.get('id')
     descriptif = request.form.get('descriptif')
-    photo = request.form.get('photo') or None
+    photo = request.form.get('photo')
     date_signalement = request.form.get('date_signalement')
     type_signalement_id = request.form.get('type_signalement_id')
     adherent_id = request.form.get('adherent_id')
     parcelle_id = request.form.get('parcelle_id')
 
     mycursor = get_db().cursor()
+
     sql = '''
     UPDATE signalement
     SET descriptif = %s,
@@ -160,53 +177,52 @@ def valid_edit_signalement():
         adherent_id = %s
     WHERE id_signalement = %s;
     '''
-    mycursor.execute(sql, (descriptif, photo, date_signalement, type_signalement_id, adherent_id, signalement_id))
-    mycursor.execute('UPDATE correspond SET parcelle_id = %s WHERE signalement_id = %s;', (parcelle_id, signalement_id))
-    if mycursor.rowcount == 0:
-        mycursor.execute('INSERT INTO correspond (parcelle_id, signalement_id) VALUES (%s, %s);', (parcelle_id, signalement_id))
+    mycursor.execute(sql, (descriptif, photo, date_signalement, type_signalement_id, adherent_id, id))
+
+    mycursor.execute('DELETE FROM correspond WHERE signalement_id = %s;', (id,))
+    mycursor.execute('INSERT INTO correspond (parcelle_id, signalement_id) VALUES (%s, %s);', (parcelle_id, id))
+
     get_db().commit()
 
-    message = 'Signalement modifié'
-    flash(message, 'alert-success')
+    flash('Signalement modifié', 'alert-success')
     return redirect('/signalement/show')
 
+
+############### SIGNALEMENT — STATISTIQUES ###############
 
 @app.route('/signalement/calcul')
 def calcul_signalement():
     mycursor = get_db().cursor()
 
-    sql_parcelles = '''
+    mycursor.execute('''
     SELECT p.id_parcelle AS parcelle_id,
-    COUNT(c.signalement_id) AS nb_signalements
+           COUNT(c.signalement_id) AS nb_signalements
     FROM parcelle p
     LEFT JOIN correspond c ON c.parcelle_id = p.id_parcelle
     GROUP BY p.id_parcelle
     ORDER BY p.id_parcelle;
-    '''
-    mycursor.execute(sql_parcelles)
+    ''')
     stats_parcelles = mycursor.fetchall()
 
-    sql_adherents = '''
+    mycursor.execute('''
     SELECT a.nom AS adherent,
-    COUNT(s.id_signalement) AS nb_signalements
+           COUNT(s.id_signalement) AS nb_signalements
     FROM adherent a
     LEFT JOIN signalement s ON s.adherent_id = a.id_adherent
     GROUP BY a.id_adherent
     ORDER BY nb_signalements DESC;
-    '''
-    mycursor.execute(sql_adherents)
+    ''')
     stats_adherents = mycursor.fetchall()
 
-    sql_top = '''
+    mycursor.execute('''
     SELECT ts.libelle_type_signalement AS type_signalement,
-    COUNT(s.id_signalement) AS nb_signalements
+           COUNT(s.id_signalement) AS nb_signalements
     FROM signalement s
     JOIN type_signalement ts ON ts.id_type_signalement = s.type_signalement_id
     GROUP BY ts.id_type_signalement
     ORDER BY nb_signalements DESC
     LIMIT 1;
-    '''
-    mycursor.execute(sql_top)
+    ''')
     signalement_frequent = mycursor.fetchone()
 
     return render_template('signalement/calcul_signalement.html', stats_parcelles=stats_parcelles, stats_adherents=stats_adherents, signalement_frequent=signalement_frequent)
