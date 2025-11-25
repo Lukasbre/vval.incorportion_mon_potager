@@ -180,11 +180,9 @@ def valid_edit_signalement():
 
     mycursor = get_db().cursor()
 
-    # Récupérer le libellé du type
     mycursor.execute('SELECT libelle_type_signalement FROM type_signalement WHERE id_type_signalement = %s;',(type_signalement_id,))
     type_label = mycursor.fetchone()['libelle_type_signalement']
 
-    # Récupérer le nom de l'adhérent
     mycursor.execute('SELECT nom FROM adherent WHERE id_adherent = %s;', (adherent_id,))
     adherent_name = mycursor.fetchone()['nom']
 
@@ -204,7 +202,6 @@ def valid_edit_signalement():
 
     get_db().commit()
 
-    # Message avec toutes les informations
     message = f"Signalement modifié (ID: {id}) | Type: {type_label} | Adhérent: {adherent_name} | Parcelle: {parcelle_id} | Date: {date_signalement}"
     flash(message, 'alert-success')
     return redirect('/signalement/show')
