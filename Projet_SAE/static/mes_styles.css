@@ -1,4 +1,3 @@
-
 /* Général */
 *
 {
@@ -109,14 +108,8 @@ input[type="checkbox"]:valid
 {
   height: 50px;
   object-fit: contain;
-  margin-right: 20px;
+  margin-right: 15px;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-  transition: transform 0.3s ease;
-}
-
-.navbar img:hover
-{
-  transform: scale(1.05);
 }
 
 /* Boutons */
@@ -145,103 +138,28 @@ input[type="checkbox"]:valid
   margin-right: 0.5rem;
 }
 
-/* Filtres */
-.filter-card
-{
-  background: #ffffff;
-  border: 1px solid #dee2e6;
-  border-radius: 6px;
-  overflow: hidden;
-}
-
-.filter-header
-{
-  background-color: #000000; /* fond noir uniquement pour le titre */
-  color: #ffffff;
-  text-align: center;
-  padding: 1rem;
-}
-
-.filter-header .card-title
-{
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin: 0;
-}
-
-.filter-body
-{
-  padding: 1.5rem;
-  background-color: #f8f9fa;
-}
-
-.filter-body label
-{
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.filter-body .form-control
-{
+/* Image du potager */
+.potager-image {
   width: 100%;
-  padding: 0.6rem;
-  border: 1px solid #ced4da;
-  border-radius: 4px;
-  transition: border 0.3s ease, box-shadow 0.3s ease;
-}
-
-.filter-body .form-control:focus
-{
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-  outline: none;
-}
-
-/* Checkbox */
-.form-check-input
-{
-  appearance: none;
-  width: 1.1em;
-  height: 1.1em;
-  border: 2px solid #6c757d;
-  border-radius: 0.25em;
-  background-color: #fff;
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
   cursor: pointer;
-  position: relative;
-  transition: all 0.2s ease;
 }
 
-.form-check-input:checked
-{
-  background-color: #fff;
-  border-color: #0d6efd;
+.potager-image:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
 
-.form-check-input:checked::after
+.potager-legend
 {
-  content: "";
-  position: absolute;
-  left: 0.25em;
-  top: 0.05em;
-  width: 0.3em;
-  height: 0.6em;
-  border: solid #0d6efd;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-.form-check-input:focus
-{
-  outline: none;
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
-}
-
-.form-check-label
-{
-  margin-left: 0.5rem;
-  cursor: pointer;
-  color: #212529;
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-top: 6px;
+  text-align: center;
 }
 
 /* Badge */
@@ -263,4 +181,33 @@ input[type="checkbox"]:valid
 .badge.bg-danger
 {
   background: #dc3545 !important;
+}
+
+/* Badge Links (signalement, produit, recolte, plante, action) */
+.badge-link
+{
+  display: inline-block;
+  padding: 0.5em 0.9em;
+  font-size: 0.8em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.badge-link:hover
+{
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  filter: brightness(1.1);
+  text-decoration: none;
+  color: white;
+}
+
+.badge-link:active
+{
+  transform: translateY(-1px);
 }

@@ -175,10 +175,14 @@ INSERT INTO adherent VALUES
 (2, 'Bendiaf', '2 rue Bossière', '0769302665'),
 (3, 'Decailloz', '14 rue de la Cavalerie', '0708091011'),
 (4, 'Bajic', '11 rue des Epiceas', '0651369236'),
-(5, 'Martin', '5 rue des Lilas', '0622334455'),
-(6, 'Durand', '7 avenue du Parc', '0677889900'),
-(7, 'Lemoine', '9 boulevard Victor', '0611223344'),
-(8, 'Dubois', '12 rue de la Gare', '0655443322');
+(5, 'Bouju', '5 rue des Lilas', '0622334455'),
+(6, 'Aubry', '7 avenue du Parc', '0677889900'),
+(7, 'Bittigier', '9 boulevard Victor', '0611223344'),
+(8, 'Lahurte', '12 rue de la Gare', '0655443322'),
+(9, 'Bonvallot', '5 rue des Lilas', '0622334455'),
+(10, 'Charton-Cautenet', '7 avenue du Parc', '0677889900'),
+(11, 'Bouchard', '9 boulevard Victor', '0611223344'),
+(12, 'Hebié', '12 rue de la Gare', '0655443322');
 
 INSERT INTO parcelle VALUES
 (1, 300, 300),
