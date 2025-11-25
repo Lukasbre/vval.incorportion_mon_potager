@@ -91,6 +91,13 @@ def valid_add_signalement():
     parcelle_id = request.form.get('parcelle_id')
 
     mycursor = get_db().cursor()
+
+    mycursor.execute('SELECT libelle_type_signalement FROM type_signalement WHERE id_type_signalement = %s;',(type_signalement_id,))
+    type_label = mycursor.fetchone()['libelle_type_signalement']
+
+    mycursor.execute('SELECT nom FROM adherent WHERE id_adherent = %s;', (adherent_id,))
+    adherent_name = mycursor.fetchone()['nom']
+
     sql = '''
     INSERT INTO signalement (descriptif, photo, date_signalement, type_signalement_id, adherent_id)
     VALUES (%s, %s, %s, %s, %s);
@@ -98,11 +105,12 @@ def valid_add_signalement():
     mycursor.execute(sql, (descriptif, photo, date_signalement, type_signalement_id, adherent_id))
     signalement_id = mycursor.lastrowid
 
-    mycursor.execute('INSERT INTO correspond (parcelle_id, signalement_id) VALUES (%s, %s);', (parcelle_id, signalement_id))
+    mycursor.execute('INSERT INTO correspond (parcelle_id, signalement_id) VALUES (%s, %s);',(parcelle_id, signalement_id))
 
     get_db().commit()
 
-    flash('Signalement ajouté', 'alert-success')
+    message = f"Signalement ajouté | Type: {type_label} | Adhérent: {adherent_name} | Parcelle: {parcelle_id} | Date: {date_signalement}"
+    flash(message, 'alert-success')
     return redirect('/signalement/show')
 
 
@@ -129,16 +137,20 @@ def edit_signalement():
 
     mycursor = get_db().cursor()
 
-    sql = '''
+    sql =sql = '''
     SELECT s.id_signalement AS id,
            s.descriptif,
            s.photo,
            s.date_signalement,
            s.type_signalement_id,
            s.adherent_id,
-           c.parcelle_id
+           c.parcelle_id,
+           ts.libelle_type_signalement,
+           a.nom
     FROM signalement s
     LEFT JOIN correspond c ON c.signalement_id = s.id_signalement
+    LEFT JOIN type_signalement ts ON ts.id_type_signalement = s.type_signalement_id
+    LEFT JOIN adherent a ON a.id_adherent = s.adherent_id
     WHERE s.id_signalement = %s;
     '''
     mycursor.execute(sql, (id,))
@@ -168,6 +180,14 @@ def valid_edit_signalement():
 
     mycursor = get_db().cursor()
 
+    # Récupérer le libellé du type
+    mycursor.execute('SELECT libelle_type_signalement FROM type_signalement WHERE id_type_signalement = %s;',(type_signalement_id,))
+    type_label = mycursor.fetchone()['libelle_type_signalement']
+
+    # Récupérer le nom de l'adhérent
+    mycursor.execute('SELECT nom FROM adherent WHERE id_adherent = %s;', (adherent_id,))
+    adherent_name = mycursor.fetchone()['nom']
+
     sql = '''
     UPDATE signalement
     SET descriptif = %s,
@@ -184,7 +204,9 @@ def valid_edit_signalement():
 
     get_db().commit()
 
-    flash('Signalement modifié', 'alert-success')
+    # Message avec toutes les informations
+    message = f"Signalement modifié (ID: {id}) | Type: {type_label} | Adhérent: {adherent_name} | Parcelle: {parcelle_id} | Date: {date_signalement}"
+    flash(message, 'alert-success')
     return redirect('/signalement/show')
 
 
@@ -195,8 +217,7 @@ def calcul_signalement():
     mycursor = get_db().cursor()
 
     mycursor.execute('''
-    SELECT p.id_parcelle AS parcelle_id,
-           COUNT(c.signalement_id) AS nb_signalements
+    SELECT p.id_parcelle AS parcelle_id, COUNT(c.signalement_id) AS nb_signalements
     FROM parcelle p
     LEFT JOIN correspond c ON c.parcelle_id = p.id_parcelle
     GROUP BY p.id_parcelle
@@ -205,8 +226,7 @@ def calcul_signalement():
     stats_parcelles = mycursor.fetchall()
 
     mycursor.execute('''
-    SELECT a.nom AS adherent,
-           COUNT(s.id_signalement) AS nb_signalements
+    SELECT a.nom AS adherent, COUNT(s.id_signalement) AS nb_signalements
     FROM adherent a
     LEFT JOIN signalement s ON s.adherent_id = a.id_adherent
     GROUP BY a.id_adherent
@@ -215,8 +235,7 @@ def calcul_signalement():
     stats_adherents = mycursor.fetchall()
 
     mycursor.execute('''
-    SELECT ts.libelle_type_signalement AS type_signalement,
-           COUNT(s.id_signalement) AS nb_signalements
+    SELECT ts.libelle_type_signalement AS type_signalement, COUNT(s.id_signalement) AS nb_signalements
     FROM signalement s
     JOIN type_signalement ts ON ts.id_type_signalement = s.type_signalement_id
     GROUP BY ts.id_type_signalement
@@ -239,7 +258,6 @@ def show_produits():
     mycursor.execute(sql)
     liste_produits = mycursor.fetchall()
     return render_template('produit/show_produit.html', produits=liste_produits)
-
 
 @app.route('/produit/add', methods=['GET'])
 def add_produit():
@@ -276,7 +294,6 @@ def edit_produit():
     mycursor.execute(sql,tuple_param)
     produit = mycursor.fetchone()
     return render_template('produit/edit_produit.html', produit=produit)
-
 
 @app.route('/produit/add', methods=['POST'])
 def valid_add_produit():
