@@ -8,7 +8,7 @@
         <title>Mon Potager</title>
     {% endblock %}
 
-    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo_potager.png') }}">
 
     {% block stylesheets %}
         <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
@@ -19,7 +19,6 @@
 
     {% include '_nav.html' %}
 
-    <!-- AJOUT : marge top pour séparer le menu et les messages -->
     <div class="container mb-4 mt-4">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}

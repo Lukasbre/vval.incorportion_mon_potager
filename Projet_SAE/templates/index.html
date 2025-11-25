@@ -5,8 +5,13 @@
     <div class="jumbotron jumbotron-fluid bg-success text-white rounded mb-5">
         <div class="container">
             <h1 class="display-3">Gestion du Potager</h1>
-            <p class="lead">Bienvenue sur l'interface du potager partagé</p>
+            <p class="lead">Bienvenue sur l'interface du potager partagé de Belfort</p>
         </div>
+    </div>
+
+    <div class="text-center mb-4">
+        <img src="{{ url_for('static', filename='images/image_potager.jpg') }}" class="potager-image" alt="Photo du potager">
+        <p class="potager-legend">Potager partagé de Belfort</p>
     </div>
 
     <div class="card shadow-lg">
@@ -29,40 +34,44 @@
                             <td>Valentin</td>
                             <td>Beuret</td>
                             <td class="text-center">
-                                <span class="badge bg-primary">1</span>
+                                <span class="badge rounded-pill" style="background-color:#90d7ff; color:white;">1</span>
                             </td>
                             <td>
-                                <span class="badge bg-danger">Signalement</span>
+                                <a href="/signalement/show" class="badge-link rounded-pill" style="background-color:#f481dc; color:white;">signalement</a>
                             </td>
                         </tr>
                         <tr>
-                            <td>[Prénom]</td>
-                            <td>[Nom]</td>
+                            <td>Lukas</td>
+                            <td>Bendiaf</td>
                             <td class="text-center">
-                                <span class="badge bg-info">[Groupe]</span>
+                                <span class="badge rounded-pill" style="background-color:#90d7ff; color:white;">1</span>
                             </td>
                             <td>
-                                <span class="badge bg-secondary">[Sujet]</span>
+                                <a href="/action/show" class="badge-link rounded-pill" style="background-color:#f481dc; color:white;">action</a>
                             </td>
                         </tr>
                         <tr>
-                            <td>[Prénom]</td>
-                            <td>[Nom]</td>
+                            <td>Adam</td>
+                            <td>Bajic</td>
                             <td class="text-center">
-                                <span class="badge bg-info">[Groupe]</span>
+                                <span class="badge rounded-pill" style="background-color:#90d7ff; color:white;">1</span>
                             </td>
                             <td>
-                                <span class="badge bg-secondary">[Sujet]</span>
+                                <a href="/plante/show" class="badge-link rounded-pill" style="background-color:#f481dc; color:white;">est plante</a>
+                                <span>et</span>
+                                <a href="/recolte/show" class="badge-link rounded-pill" style="background-color:#f481dc; color:white;">est recolte</a>
                             </td>
                         </tr>
                         <tr>
-                            <td>[Prénom]</td>
-                            <td>[Nom]</td>
+                            <td>Valentin</td>
+                            <td>Decailloz</td>
                             <td class="text-center">
-                                <span class="badge bg-info">[Groupe]</span>
+                                <span class="badge rounded-pill" style="background-color:#90d7ff; color:white;">1</span>
                             </td>
                             <td>
-                                <span class="badge bg-secondary">[Sujet]</span>
+                                <a href="/produit/show" class="badge-link rounded-pill" style="background-color:#f481dc; color:white;">produit</a>
+                            </td>
+                            <td>
                             </td>
                         </tr>
                     </tbody>
