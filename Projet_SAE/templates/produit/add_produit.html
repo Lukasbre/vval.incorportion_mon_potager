@@ -1,40 +1,47 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajouter un Produit</title>
+{% extends 'layout.html' %}
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container mt-4">
+{% block title %}
+    <title>title</title>
+{% endblock %}
+
+{% block body %}
+    <div class="col-md-8 mb-3" style="margin-left: 50px; margin-top: 50px;">
         <h1>Formulaire de Produit</h1>
         <form action="/produit/add" method="post">
 
-            <div class="mb-3">
-                <label for="libelle" class="form-label">Libellé du produit :</label>
-                <input type="text" class="form-control" id="libelle" placeholder="Ex: Tomate, Cerise..." required name="libelle">
+            <div class="col-md-6">
+                <label class="form-label" for="libelle" >Libellé du produit :</label>
+                <input class="form-control" type="text" id="libelle" placeholder="Ex: Tomate, Cerise..."  name="libelle" required>
             </div>
 
-            <div class="mb-3">
-                <label for="prix" class="form-label">Prix du produit :</label>
-                <input type="number" step="0.01" class="form-control" id="prix" placeholder="Ex: 2.50" name="prix">
-            </div>
-
-            <div class="mb-3">
+            <div class="col-md-6">
                 <label for="categorie_id" class="form-label">Catégorie :</label>
-                <select class="form-select" id="categorie_id" required name="categorie_id">
+                <select class="form-select" class="form-select" id="categorie_id" required name="categorie_id">
                     <option value="" disabled selected>Choisir une catégorie</option>
                     <option value="1">Légume</option>
                     <option value="2">Fruit</option>
                 </select>
             </div>
 
-            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <div class="col-md-6">
+                <label for="recolte" class="form-label">periode de la recolte optimale :</label>
+                <input type="text" class="form-control" id="plantation" name="plantation" placeholder="Ex: Mars-Avril...">
+            </div>
+
+            <div class="col-md-6">
+                <label for="plantation" class="form-label">periode de la plantation optimale :</label>
+                <input type="text" class="form-control" id="recolte" name="recolte" placeholder="Ex: Mars-Avril...">
+            </div>
+
+            <div class="col-md-6">
+                <label for="prix" class="form-label">Prix du produit :</label>
+                <input type="number" step="0.01" class="form-control" id="prix" placeholder="Ex: 2.50" name="prix">
+            </div>
+
+        <div style="margin-top: 20px;">
+            <button type="submit" class="btn btn-success me-3">Enregistrer</button>
             <a href="/produit/show" class="btn btn-secondary">Annuler</a>
+        </div>
         </form>
     </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+{% endblock %}
