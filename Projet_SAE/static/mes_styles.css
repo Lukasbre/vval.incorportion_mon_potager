@@ -121,42 +121,41 @@ input[type="checkbox"]:valid
 }
 
 /* Boutons Navbar Dropdown */
-.navbar-nav .btn-dropdown
+.btn-dropdown
 {
-  background-color: #fff;
-  border: 2px solid #198754;
+  background-color: #198754;
+  border: none;
   border-radius: 6px;
   padding: 0.75rem 1.5rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #198754;
+  color: #fff;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(25, 135, 84, 0.1);
+  box-shadow: 0 2px 8px rgba(25, 135, 84, 0.2);
   cursor: pointer;
   font-size: 0.95rem;
   white-space: nowrap;
-  border: none;
   display: inline-block;
 }
 
-.navbar-nav .btn-dropdown:hover
+.btn-dropdown:hover
 {
-  background-color: #198754;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+  background-color: #0d4d2a;
+  box-shadow: 0 4px 12px rgba(25, 135, 84, 0.4);
   transform: translateY(-2px);
 }
 
-.navbar-nav .btn-dropdown:active
+.btn-dropdown:active
 {
   transform: translateY(0);
+  background-color: #0a3d22;
 }
 
 /* Dropdown Menu */
 .dropdown-menu
 {
-  border: 2px solid #198754;
+  border: none;
   border-radius: 6px;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   padding: 0.5rem 0;
@@ -191,7 +190,7 @@ input[type="checkbox"]:valid
 
 .dropdown-item:hover
 {
-  background-color: #f0f9f6;
+  background-color: #e8f5f0;
   border-left: 3px solid #198754;
   color: #198754;
   padding-left: 1.8rem;
@@ -199,8 +198,8 @@ input[type="checkbox"]:valid
 
 .dropdown-item:active
 {
-  background-color: #e8f5f0;
-  color: #198754;
+  background-color: #d4e9e0;
+  color: #0d4d2a;
 }
 
 /* Boutons */
