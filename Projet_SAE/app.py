@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.secret_key = 'une cle(token) : grain de sel(any random string)'
 
-# mysql --user=??? --password=??? --host=ASUSVAL.local --database=sae_mon_potager
+# mysql --user=??? --password=??? --host=??? --database=sae_mon_potager
 
 def get_db():
     if 'db' not in g:
@@ -256,9 +256,6 @@ def show_produits():
     liste_produits = mycursor.fetchall()
     return render_template('produit/show_produit.html', produits=liste_produits)
 
-
-
-
 @app.route('/produit/add', methods=['GET'])
 def add_produit():
     print('''affichage du formulaire pour saisir un produit''')
@@ -330,7 +327,7 @@ def valid_edit_produit():
     get_db().commit()
     return redirect('/produit/show')
 
-@app.route('/produit/statistique', methods=['GET'])
+@app.route('/produit/calcul', methods=['GET'])
 def statistique_produit():
     mycursor = get_db().cursor()
 
@@ -370,9 +367,7 @@ def statistique_produit():
     produits_longue_duree = mycursor.fetchall()
 
 
-    return render_template('produit/statistique_produit.html',
-                           produits_dates_proches=produits_dates_proches,
-                           produits_longue_duree=produits_longue_duree)
+    return render_template('produit/calcul_produit.html', produits_dates_proches=produits_dates_proches, produits_longue_duree=produits_longue_duree)
 
 
 ############################# ACTION #############################
