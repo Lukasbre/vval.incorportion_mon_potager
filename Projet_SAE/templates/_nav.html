@@ -4,10 +4,38 @@
         <div class="navbar-nav d-flex align-items-center">
             <img src="{{ url_for('static', filename='images/logo_potager.png') }}" alt="Logo Potager">
             <a class="navbar-brand fw-bold" href="/">SAE - Mon Potager</a>
-            <a class="btn btn-outline-success my-2 my-sm-0 me-2" href="">Actions</a>
-            <a class="btn btn-outline-success my-2 my-sm-0 me-2" href="">Produits</a>
-            <a class="btn btn-outline-success my-2 my-sm-0 me-2" href="/signalement/show">Signalements</a>
-            <a class="btn btn-outline-success my-2 my-sm-0 me-2" href="">Plantation</a>
+
+            <div class="btn-group me-2" role="group">
+                <button class="btn-dropdown" type="button" id="actionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">Actions ▼</button>
+                <ul class="dropdown-menu" aria-labelledby="actionsDropdown">
+                    <li><a class="dropdown-item" href="#">Voir les actions</a></li>
+                    <li><a class="dropdown-item" href="#">Voir les statistiques</a></li>
+                </ul>
+            </div>
+
+            <div class="btn-group me-2" role="group">
+                <button class="btn-dropdown" type="button" id="produitsDropdown" data-bs-toggle="dropdown" aria-expanded="false">Produits ▼</button>
+                <ul class="dropdown-menu" aria-labelledby="produitsDropdown">
+                    <li><a class="dropdown-item" href="#">Voir les produits</a></li>
+                    <li><a class="dropdown-item" href="#">Voir les statistiques</a></li>
+                </ul>
+            </div>
+
+            <div class="btn-group me-2" role="group">
+                <button class="btn-dropdown" type="button" id="signalementDropdown" data-bs-toggle="dropdown" aria-expanded="false">Signalements ▼</button>
+                <ul class="dropdown-menu" aria-labelledby="signalementDropdown">
+                    <li><a class="dropdown-item" href="/signalement/show">Voir les signalements</a></li>
+                    <li><a class="dropdown-item" href="/signalement/calcul">Voir les statistiques</a></li>
+                </ul>
+            </div>
+
+            <div class="btn-group" role="group">
+                <button class="btn-dropdown" type="button" id="plantationDropdown" data-bs-toggle="dropdown" aria-expanded="false">Plantation ▼</button>
+                <ul class="dropdown-menu" aria-labelledby="plantationDropdown">
+                    <li><a class="dropdown-item" href="#">Voir les plantations</a></li>
+                    <li><a class="dropdown-item" href="#">Voir les statistiques</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </nav>

@@ -21,8 +21,8 @@
                     <tbody>
                     {% for ligne in stats_parcelles %}
                         <tr>
-                            <td>{{ ligne.parcelle_id }}</td>
-                            <td>{{ ligne.nb_signalements }}</td>
+                            <td><span class="badge rounded-pill" style="background-color:#ff5989; color:white;">{{ ligne.parcelle_id }}</span></td>
+                            <td><span class="badge rounded-pill" style="background-color:#ff5989; color:white;">{{ ligne.nb_signalements }}</span></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -47,8 +47,8 @@
                     <tbody>
                     {% for ligne in stats_adherents %}
                         <tr>
-                            <td>{{ ligne.adherent }}</td>
-                            <td>{{ ligne.nb_signalements }}</td>
+                            <td><span class="badge rounded-pill" style="background-color:#8ea9ff; color:white;">{{ ligne.adherent }}</span></td>
+                            <td><span class="badge rounded-pill" style="background-color:#8ea9ff; color:white;">{{ ligne.nb_signalements }}</span></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -57,7 +57,7 @@
         </div>
     </div>
 
-    <div class="card shadow-lg mb-4">
+        <div class="card shadow-lg mb-4">
         <div class="card-header bg-dark text-white">
             <h2 class="h5 mb-0">Signalement le plus fréquent</h2>
         </div>
@@ -73,8 +73,8 @@
                     <tbody>
                     {% if signalement_frequent %}
                         <tr>
-                            <td>{{ signalement_frequent.type_signalement }}</td>
-                            <td>{{ signalement_frequent.nb_signalements }}</td>
+                            <td><span class="badge rounded-pill" style="background-color:#28a745; color:white;">{{ signalement_frequent.type_signalement }}</span></td>
+                            <td><span class="badge rounded-pill" style="background-color:#28a745; color:white;">{{ signalement_frequent.nb_signalements }}</span></td>
                         </tr>
                     {% else %}
                         <tr>
