@@ -249,28 +249,41 @@ def calcul_signalement():
 @app.route('/produit/show')
 def show_produits():
     mycursor = get_db().cursor()
-    sql = ''' SELECT id_produit AS id, libelle_produit AS libelle, prix_produit AS prix, categorie_id, periode_recolte_optimale AS recolte, periode_plantation_optimale AS plantation
-    FROM produit
-    ORDER BY id_produit;'''
-    mycursor.execute(sql)
+    sql_produits = ''' SELECT id_produit                  AS id, 
+                              libelle_produit             AS libelle, 
+                              prix_produit                AS prix, 
+                              categorie_id, 
+                              periode_recolte_optimale    AS recolte, 
+                              periode_plantation_optimale AS plantation
+                       FROM produit
+                       ORDER BY id_produit;'''
+    mycursor.execute(sql_produits)
     liste_produits = mycursor.fetchall()
-    return render_template('produit/show_produit.html', produits=liste_produits)
+    sql_categories = "SELECT id_categorie AS id, libelle_categorie AS libelle FROM categorie;"
+    mycursor.execute(sql_categories)
+    liste_categories = mycursor.fetchall()
+    return render_template('produit/show_produit.html', produits=liste_produits, categories=liste_categories)
+
 
 @app.route('/produit/add', methods=['GET'])
 def add_produit():
     print('''affichage du formulaire pour saisir un produit''')
-    return render_template('produit/add_produit.html')
+    mycursor = get_db().cursor()
+    sql = "SELECT id_categorie AS id, libelle_categorie AS libelle FROM categorie;"
+    mycursor.execute(sql)
+    liste_categories = mycursor.fetchall()
+    return render_template('produit/add_produit.html', categorie=liste_categories)
 
 @app.route('/produit/delete')
 def delete_produit():
-    print('''suppression d'un produit''')
     id=request.args.get('id',0)
-    print(id)
+    message = 'suppression du produit : ' + id
+    print(message)
+    flash(message, 'alert-warning')
     mycursor = get_db().cursor()
     tuple_param=(id)
     sql="DELETE FROM produit WHERE id_produit=%s;"
     mycursor.execute(sql,tuple_param)
-
     get_db().commit()
     print(request.args)
     print(request.args.get('id'))
@@ -300,8 +313,9 @@ def valid_add_produit():
     categorie_id = request.form.get('categorie_id')
     plantation = request.form.get('plantation')
     recolte = request.form.get('recolte')
-    message = 'libelle :' + libelle + ' - prix :' + prix + ' - periode de plantation optimal' + plantation + ' - periode de recolte optimale :' + recolte + ' - categorie :' + categorie_id
+    message = 'Ajout d\'un nouveau produit : ' + ' --- libelle : ' + libelle + ' - prix : ' + prix + ' --- periode de plantation optimal ' + plantation + ' --- periode de recolte optimale : ' + recolte + ' --- categorie : ' + categorie_id
     print(message)
+    flash(message, 'alert-success')
     mycursor = get_db().cursor()
     tuple_param=(libelle, prix, categorie_id, plantation, recolte)
     sql="INSERT INTO produit(id_produit, libelle_produit, prix_produit, categorie_id, periode_recolte_optimale, periode_plantation_optimale) VALUES (NULL, %s, %s, %s, %s, %s);"
@@ -318,57 +332,59 @@ def valid_edit_produit():
     categorie_id = request.form.get('categorie_id')
     plantation = request.form.get('plantation')
     recolte = request.form.get('recolte')
-    message = 'libelle :' + libelle + ' - prix :' + prix + ' - periode de plantation optimal' + plantation + ' - periode de recolte optimale :' + recolte + ' pour le produit d identifiant :' + id
+    message = 'modification d\'un produit' + 'libelle : ' + libelle + ' --- prix : ' + prix + ' --- periode de plantation optimal : ' + plantation + ' --- periode de recolte optimale : ' + recolte + ' --- pour le produit d identifiant : ' + id
     print(message)
+    flash(message, 'alert-success')
     mycursor = get_db().cursor()
-    tuple_param = (libelle, prix, categorie_id, recolte, plantation, id)
+    param = (libelle, prix, categorie_id, recolte, plantation, id)
     sql="UPDATE produit SET libelle_produit = %s, prix_produit = %s, categorie_id = %s, periode_recolte_optimale = %s, periode_plantation_optimale = %s WHERE id_produit=%s;"
-    mycursor.execute(sql,tuple_param)
+    mycursor.execute(sql,param)
     get_db().commit()
     return redirect('/produit/show')
 
-@app.route('/produit/calcul', methods=['GET'])
+@app.route('/produit/statistique', methods=['GET'])
 def statistique_produit():
     mycursor = get_db().cursor()
 
 
-    sql_dates = '''
-    SELECT 
-        p.libelle_produit AS nom_produit, 
-        dp.date_plantation, 
-        dr.date_recolte
-    FROM produit p
-    JOIN est_plante ep ON p.id_produit = ep.produit_id
-    JOIN date_plantation dp ON ep.date_plantation_id = dp.id_date_plantation
-    LEFT JOIN est_recolte er ON p.id_produit = er.produit_id AND ep.parcelle_id = er.parcelle_id
-    LEFT JOIN date_recolte dr ON er.date_recolte_id = dr.id_date_recolte
-    ORDER BY LEAST(
-        ABS(DATEDIFF(dp.date_plantation, CURDATE())), 
-        ABS(DATEDIFF(IFNULL(dr.date_recolte, '2099-12-31'), CURDATE()))
-    ) ASC
-    LIMIT 10;
+    sql_repartition = '''
+        SELECT 
+            categorie.libelle_categorie AS libelle, 
+            COUNT(produit.id_produit) AS nombre, 
+            AVG(produit.prix_produit) AS prix_moyen
+        FROM categorie
+        LEFT JOIN produit ON categorie.id_categorie = produit.categorie_id
+        GROUP BY categorie.id_categorie, categorie.libelle_categorie;
     '''
-    mycursor.execute(sql_dates)
-    produits_dates_proches = mycursor.fetchall()
+    mycursor.execute(sql_repartition)
+    repartition_categories = mycursor.fetchall()
 
 
-    sql_duree = '''
-    SELECT 
-        p.libelle_produit AS nom_produit, 
-        DATEDIFF(dr.date_recolte, dp.date_plantation) AS duree_culture
-    FROM produit p
-    JOIN est_plante ep ON p.id_produit = ep.produit_id
-    JOIN date_plantation dp ON ep.date_plantation_id = dp.id_date_plantation
-    JOIN est_recolte er ON p.id_produit = er.produit_id AND ep.parcelle_id = er.parcelle_id
-    JOIN date_recolte dr ON er.date_recolte_id = dr.id_date_recolte
-    ORDER BY duree_culture DESC;
+
+    sql_top_produits = '''
+        SELECT libelle_produit, prix_produit
+        FROM produit
+        ORDER BY prix_produit DESC
+        LIMIT 5;
     '''
-    mycursor.execute(sql_duree)
-    produits_longue_duree = mycursor.fetchall()
+    mycursor.execute(sql_top_produits)
+    top_produits = mycursor.fetchall()
+
+    sql_periodes = '''
+                   SELECT periode_recolte_optimale AS periode, COUNT(id_produit) AS nbr_produits
+                   FROM produit
+                   WHERE periode_recolte_optimale IS NOT NULL
+                   GROUP BY periode_recolte_optimale
+                   ORDER BY nbr_produits DESC; 
+                   '''
+    mycursor.execute(sql_periodes)
+    stats_periodes = mycursor.fetchall()
 
 
-    return render_template('produit/calcul_produit.html', produits_dates_proches=produits_dates_proches, produits_longue_duree=produits_longue_duree)
-
+    return render_template('produit/statistique_produit.html',
+                           repartition=repartition_categories,
+                           top_produits=top_produits,
+                           stats_periodes=stats_periodes)
 
 ############################# ACTION #############################
 
