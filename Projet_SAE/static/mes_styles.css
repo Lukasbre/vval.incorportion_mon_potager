@@ -112,6 +112,97 @@ input[type="checkbox"]:valid
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
+.navbar-brand
+{
+  font-weight: 700;
+  font-size: 1.3rem;
+  color: #212529;
+  margin-right: 20px;
+}
+
+/* Boutons Navbar Dropdown */
+.navbar-nav .btn-dropdown
+{
+  background-color: #fff;
+  border: 2px solid #198754;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #198754;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(25, 135, 84, 0.1);
+  cursor: pointer;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  border: none;
+  display: inline-block;
+}
+
+.navbar-nav .btn-dropdown:hover
+{
+  background-color: #198754;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(25, 135, 84, 0.3);
+  transform: translateY(-2px);
+}
+
+.navbar-nav .btn-dropdown:active
+{
+  transform: translateY(0);
+}
+
+/* Dropdown Menu */
+.dropdown-menu
+{
+  border: 2px solid #198754;
+  border-radius: 6px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  padding: 0.5rem 0;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown
+{
+  from
+  {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to
+  {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-item
+{
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #212529;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+  text-decoration: none;
+}
+
+.dropdown-item:hover
+{
+  background-color: #f0f9f6;
+  border-left: 3px solid #198754;
+  color: #198754;
+  padding-left: 1.8rem;
+}
+
+.dropdown-item:active
+{
+  background-color: #e8f5f0;
+  color: #198754;
+}
+
 /* Boutons */
 .btn-primary
 {
@@ -139,7 +230,8 @@ input[type="checkbox"]:valid
 }
 
 /* Image du potager */
-.potager-image {
+.potager-image
+{
   width: 100%;
   max-height: 500px;
   object-fit: cover;
@@ -149,7 +241,8 @@ input[type="checkbox"]:valid
   cursor: pointer;
 }
 
-.potager-image:hover {
+.potager-image:hover
+{
   transform: scale(1.02);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
 }
