@@ -1,0 +1,55 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Modifier une entrée dans la Table des Récoltes</h1> </div>
+    <form method="POST" action="/plantation/edit2">
+        <input type="hidden" name="id" value="{{ plantation_recolte.id_est_recolte }}">
+
+        <div class="mb-3">
+            <label for="id_parcelle" class="form-label">Identifiant de la parcelle :</label>
+            <select name="id_parcelle" id="id_parcelle" class="form-select" required>
+                {% for parcelle in parcelles %}
+                    <option value="{{ parcelle.id_parcelle }}"
+                        {% if parcelle.id_parcelle | string == plantation_recolte.parcelle_id | string %}selected{% endif %}>
+                        Parcelle ID: {{ parcelle.id_parcelle }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="produit_id" class="form-label">Produit récolté :</label>
+            <select name="produit_id" id="produit_id" class="form-select" required>
+                {% for produit in identifiantproduit %}
+                    <option value="{{ produit.id_produit }}"
+                        {% if produit.id_produit | string == plantation_recolte.produit_id | string %}selected{% endif %}>
+                        {{ produit.libelle_produit }} (ID: {{ produit.id_produit }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+
+
+         <div class="mb-3">
+            <label for="date_recolte" class="form-label">Date de récolte :</label>
+            <input type="date" name="date_recolte" id="date_recolte"
+                   class="form-control"
+                   value="{{ plantation_recolte.date_recolte_formatee }}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="quantite_recoltee" class="form-label">Quantité récoltée :</label>
+            <input type="number" name="quantite_recoltee" id="quantite_recoltee"
+                   class="form-control"
+                   value="{{ plantation_recolte.quantite_recoltee }}" required>
+        </div>
+
+        <button type="submit"  class="btn btn-success">Modifier</button>
+        <a href="/plantation/show" class="btn btn-outline-danger">Annuler</a>
+    </form>
+</div>
+{% endblock %}

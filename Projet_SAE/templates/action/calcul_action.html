@@ -1,0 +1,92 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container mt-5">
+
+    <h1 class="mb-4">Statistiques des actions</h1>
+
+    <div class="card shadow-lg mb-4">
+        <div class="card-header bg-dark text-white">
+            <h2 class="h5 mb-0">Nombre d'actions par parcelle</h2>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Parcelle</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for ligne in stats_parcelles %}
+                        <tr>
+                            <td>{{ ligne.parcelle_id }}</td>
+                            <td>{{ ligne.nb_actions }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-lg mb-4">
+        <div class="card-header bg-dark text-white">
+            <h2 class="h5 mb-0">Nombre d'actions par adhérent</h2>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Adhérent</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for ligne in stats_adherents %}
+                        <tr>
+                            <td>{{ ligne.adherent }}</td>
+                            <td>{{ ligne.nb_actions }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-lg mb-4">
+        <div class="card-header bg-dark text-white">
+            <h2 class="h5 mb-0">Type d'action le plus fréquent</h2>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Type d'action</th>
+                            <th>Nombre d'actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% if action_frequente %}
+                        <tr>
+                            <td>{{ action_frequente.type_action }}</td>
+                            <td>{{ action_frequente.nb_actions }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="2" class="text-center">Aucune action enregistrée</td>
+                        </tr>
+                    {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <a class="btn btn-secondary" href="/action/show">Retour</a>
+</div>
+{% endblock %}

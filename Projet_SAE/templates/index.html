@@ -4,76 +4,113 @@
 <div class="container mt-5">
     <div class="jumbotron jumbotron-fluid bg-success text-white rounded mb-5">
         <div class="container">
-            <h1 class="display-3">Gestion du Potager</h1>
+            <h1 class="display-3">Mon Potager</h1>
             <p class="lead">Bienvenue sur l'interface du potager partagé de Belfort</p>
         </div>
     </div>
 
-    <div class="text-center mb-4">
-        <img src="{{ url_for('static', filename='images/image_potager.jpg') }}" class="potager-image" alt="Photo du potager">
-        <p class="potager-legend">Potager partagé de Belfort</p>
+    <div class="container text-center">
+      <div class="row align-items-start">
+        <div class="col-6">
+          <div class="jumbotron jumbotron-fluid bg-secondary text-white rounded mb-5">
+            <div class="container">
+                <h1 class="display-6">Explication du projet</h1>
+                <p class="lead">Mon Potager est une entreprise de gestion de potager participatif.
+                    <br> Chaque adhérent peut, au choix : planter, récolter, faire des signalement et prendre soin de parcelle à sa disposition et au rythme qu'il veut.</p>
+            </div>
+        </div>
+        </div>
+        <div class="col-6">
+          <div class="jumbotron jumbotron-fluid bg-secondary text-white rounded mb-5">
+            <div class="container">
+                <h1 class="display-6">Une initiative éco-responsable</h1>
+                <p class="lead">Mon Potager met un point d'honneur sur le développement durable et l'écologie.
+                    <br> C'est pourquoi chaque produit utilisé respecte au mieux le développement des plantes sans empoisonner les sols.</p>
+            </div>
+        </div>
+        </div>
+        <div class="col-6">
+          <div class="jumbotron jumbotron-fluid bg-secondary text-white rounded mb-5">
+            <div class="container">
+                <h1 class="display-6">Une démarche humanitaire</h1>
+                <p class="lead">Le partage et l'altruisme a une place toute particulière au sein de Mon Potager.
+                    <br>Ainsi, chaque produit récolté sera ensuite redistribué aux plus démunis au sein de banques alimentaires.</p>
+            </div>
+        </div>
+        </div>
+          <div class="col-6">
+          <div class="jumbotron jumbotron-fluid bg-secondary text-white rounded mb-5">
+            <div class="container">
+                <h1 class="display-6">Comment nous rejoindre ?</h1>
+                <p class="lead">Rejoindre Mon Potager sur le territoire de Belfort ne prend que quelque minutes.
+                    <br>Il suffit de remplir le formulaire d'inscription, d'avoir plus de 18 ans et d'avoir effectué la formation au préalable.</p>
+            </div>
+        </div>
+        </div>
+      </div>
     </div>
 
+    <div class="card">
+      <img src="../static/images/image_potager.jpg" class="card-img-top" alt="Image du potager partagé de Belfort">
+
+      <div class="card-body">
+        <h5 class="card-title">Exemple du Potager de Belfort :</h5>
+        <p class="card-text">Véronique, 38 ans, en pleine reconversion professionnelle, travail d'arrache-pied chaque jour pour prendre soin des plantes sur les parcelles 2 et 3.
+            <br>Sa douceur et son expertise est une réelle aide qui a permis la naissance de jolie pousse de carotte et betterave.</p>
+        <a href="#" class="btn btn-success">Rejoindre Mon Potager</a>
+      </div>
+    </div>
+
+    <br>
     <div class="card shadow-lg">
         <div class="card-header bg-dark text-white">
-            <h2 class="h4 mb-0">Équipe de développement</h2>
+            <h2 class="h4 mb-0">Qui a développé le site de gestion de Mon Potager ?</h2>
         </div>
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
                     <thead class="table-light">
                         <tr>
-                            <th scope="col">Prénom</th>
-                            <th scope="col">Nom</th>
-                            <th scope="col" class="text-center">Groupe</th>
-                            <th scope="col">Sujet</th>
+                            <th scope="col" class="text-center">Nom</th>
+                            <th scope="col" class="text-center">Prénom</th>
+                            <th scope="col" class="text-center">Rôle dans l'équipe</th>
+                            <th scope="col" class="text-center">Page attribué</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>Valentin</td>
-                            <td>Beuret</td>
+                            <td class="text-center">Beuret</td>
+                            <td class="text-center">Valentin</td>
+                            <td class="text-center"> Gestion des signalements sur les parcelles</td>
                             <td class="text-center">
-                                <span class="badge rounded-pill" style="background-color:#90d7ff; color:white;">1</span>
-                            </td>
-                            <td>
-                                <a href="/signalement/show" class="badge-link rounded-pill" style="background-color:#f481dc; color:white;">signalement</a>
+                                <a href="/signalement/show" class="badge-link rounded-pill" style="background-color:#f481dc; color:white;">Page signalement</a>
                             </td>
                         </tr>
                         <tr>
-                            <td>Lukas</td>
-                            <td>Bendiaf</td>
+                            <td class="text-center">Decailloz</td>
+                            <td class="text-center">Valentin</td>
+                            <td class="text-center"> Contrôle des produits et ajustement des stocks</td>
                             <td class="text-center">
-                                <span class="badge rounded-pill" style="background-color:#90d7ff; color:white;">1</span>
-                            </td>
-                            <td>
-                                <a href="/action/show" class="badge-link rounded-pill" style="background-color:#f481dc; color:white;">action</a>
+                                <a href="/produit/show" class="badge-link rounded-pill" style="background-color:#f481dc; color:white;">Page produit</a>
                             </td>
                         </tr>
                         <tr>
-                            <td>Adam</td>
-                            <td>Bajic</td>
+                            <td class="text-center">Bendiaf</td>
+                            <td class="text-center">Lukas</td>
+                            <td class="text-center"> Coorélation entre les actions </td>
                             <td class="text-center">
-                                <span class="badge rounded-pill" style="background-color:#90d7ff; color:white;">1</span>
-                            </td>
-                            <td>
-                                <a href="/plante/show" class="badge-link rounded-pill" style="background-color:#f481dc; color:white;">est plante</a>
-                                <span>et</span>
-                                <a href="/recolte/show" class="badge-link rounded-pill" style="background-color:#f481dc; color:white;">est recolte</a>
+                                <a href="/action/show" class="badge-link rounded-pill" style="background-color:#f481dc; color:white;">Page action</a>
                             </td>
                         </tr>
                         <tr>
-                            <td>Valentin</td>
-                            <td>Decailloz</td>
+                            <td class="text-center">Bajic</td>
+                            <td class="text-center">Adam</td>
+                            <td class="text-center"> Contrôle des récoltes et plantations</td>
                             <td class="text-center">
-                                <span class="badge rounded-pill" style="background-color:#90d7ff; color:white;">1</span>
-                            </td>
-                            <td>
-                                <a href="/produit/show" class="badge-link rounded-pill" style="background-color:#f481dc; color:white;">produit</a>
-                            </td>
-                            <td>
+                                <a href="/plantation/show" class="badge-link rounded-pill" style="background-color:#f481dc; color:white;">Page plantation et récolte</a>
                             </td>
                         </tr>
+
                     </tbody>
                 </table>
             </div>

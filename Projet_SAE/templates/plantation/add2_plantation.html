@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Ajouter une entrée dans la Table des Récoltes</h1>
+    </div>
+    <form method="POST" action="/plantation/add2">
+
+        <div class="mb-3">
+            <label for="id_parcelle" class="form-label">L'identifiant de la parcelle :</label><br>
+            <select id="id_parcelle" class="form-select" name="id_parcelle" required>
+
+                <option value=""> Sélectionnez une parcelle </option>
+                {% for p in parcelles %}
+                    <option value="{{ p.id_parcelle }}">{{ p.id_parcelle }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="produit_id" class="form-label">Identifiant du produit :</label><br>
+            <select class="form-select" id="produit_id" name="produit_id" required>
+
+                <option value=""> Sélectionnez un produit </option>
+                {% for pr in identifiantproduit %}
+                    <option value="{{ pr.id_produit }}">{{ pr.libelle_produit }} (ID: {{ pr.id_produit }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+                <label for="date_recolte" class="form-label">Date de récolte :</label><br>
+                <input type="date" class="form-control" id="date_recolte" name="date_recolte" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="quantite_recoltee" class="form-label">Quantité récoltée :</label><br>
+            <input type="number" class="form-control" id="quantite_recoltee" name="quantite_recoltee" min="1">
+        </div>
+        <button type="submit"  class="btn btn-success">Ajouter</button>
+        <a href="/plantation/show" class="btn btn-outline-danger">Annuler</a>
+    </form>
+</div>
+{% endblock %}

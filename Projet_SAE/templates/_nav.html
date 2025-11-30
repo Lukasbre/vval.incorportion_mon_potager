@@ -2,40 +2,49 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
         <div class="navbar-nav d-flex align-items-center">
-            <img src="{{ url_for('static', filename='images/logo_potager.png') }}" alt="Logo Potager">
+            <a href="/"><img src="../static/images/logo_potager.png" alt="Logo Potager"><a href="/">
             <a class="navbar-brand fw-bold" href="/">SAE - Mon Potager</a>
 
-            <div class="btn-group me-2" role="group">
-                <button class="btn-dropdown" type="button" id="actionsDropdown" data-bs-toggle="dropdown" aria-expanded="false">Actions ▼</button>
-                <ul class="dropdown-menu" aria-labelledby="actionsDropdown">
-                    <li><a class="dropdown-item" href="#">Voir les actions</a></li>
-                    <li><a class="dropdown-item" href="#">Voir les statistiques</a></li>
-                </ul>
-            </div>
-
-            <div class="btn-group me-2" role="group">
-                <button class="btn-dropdown" type="button" id="produitsDropdown" data-bs-toggle="dropdown" aria-expanded="false">Produits ▼</button>
-                <ul class="dropdown-menu" aria-labelledby="produitsDropdown">
-                    <li><a class="dropdown-item" href="#">Voir les produits</a></li>
-                    <li><a class="dropdown-item" href="#">Voir les statistiques</a></li>
-                </ul>
-            </div>
-
-            <div class="btn-group me-2" role="group">
-                <button class="btn-dropdown" type="button" id="signalementDropdown" data-bs-toggle="dropdown" aria-expanded="false">Signalements ▼</button>
-                <ul class="dropdown-menu" aria-labelledby="signalementDropdown">
-                    <li><a class="dropdown-item" href="/signalement/show">Voir les signalements</a></li>
-                    <li><a class="dropdown-item" href="/signalement/calcul">Voir les statistiques</a></li>
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  Action - Lukas BENDIAF
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/action/show">Afficher les actions - CRUD</a></li>
+                    <li><a class="dropdown-item" href="/action/statistique">Afficher les statistiques des actions - ETAT</a></li>
                 </ul>
             </div>
 
             <div class="btn-group" role="group">
-                <button class="btn-dropdown" type="button" id="plantationDropdown" data-bs-toggle="dropdown" aria-expanded="false">Plantation ▼</button>
-                <ul class="dropdown-menu" aria-labelledby="plantationDropdown">
-                    <li><a class="dropdown-item" href="#">Voir les plantations</a></li>
-                    <li><a class="dropdown-item" href="#">Voir les statistiques</a></li>
+                <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  Produit - Valentin DECAILLOZ
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/produit/show">Afficher les produits - CRUD</a></li>
+                    <li><a class="dropdown-item" href="/produit/statistique">Afficher les statistiques des produits - ETAT</a></li>
                 </ul>
             </div>
+
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  Signalement - Valentin BEURET
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/signalement/show">Afficher les signalements de parcelles - CRUD</a></li>
+                    <li><a class="dropdown-item" href="/signalement/calcul">Afficher les statistiques de signalement - ETAT</a></li>
+                </ul>
+            </div>
+
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  Plantation - Adam BAJIC
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="/plantation/show">Afficher les plantations et les récoltes - CRUD</a></li>
+                    <li><a class="dropdown-item" href="/plantation/stat">Afficher les statistiques des plantations et des récoltes - ETAT</a></li>
+                </ul>
+            </div>
+
         </div>
     </div>
 </nav>

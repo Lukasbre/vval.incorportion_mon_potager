@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<h2>Ajouter une action</h2>
+
+<form action="/action/add_validation" method="POST">
+    <div class="form-group">
+        <label>Libellé *</label>
+        <input class="form-control" type="text" name="libelle_action" required>
+    </div>
+
+    <div class="form-group">
+        <label>Type *</label>
+        <select class="form-control" name="type_action_id" required>
+            {% for t in types %}
+            <option value="{{ t.id_type_action }}">{{ t.libelle_type_action }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>Parcelle *</label>
+        <input class="form-control" type="number" name="parcelle_id" required>
+    </div>
+
+    <div class="form-group">
+        <label>Date *</label>
+        <input type="date" name="date_action" class="form-control" required>
+    </div>
+
+    <button class="btn btn-success mt-3">Ajouter</button>
+</form>
+
+{% endblock %}

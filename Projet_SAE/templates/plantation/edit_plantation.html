@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Modifier une entrée dans la Table des Plantations</h1>
+    </div>
+    <form method="POST" action="/plantation/edit">
+        <input type="hidden" name="id" value="{{ plantation.id_est_plante }}">
+
+        <div class="mb-3">
+            <label for="id_parcelle" class="form-label">Identifiant de la parcelle :</label>
+            <select name="id_parcelle" id="id_parcelle" class="form-select" required>
+                {% for parcelle in parcelles %}
+                    <option value="{{ parcelle.id }}"
+                        {% if parcelle.id | string == plantation.parcelle_id | string %}selected{% endif %}>
+                        Parcelle ID: {{ parcelle.id }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="produit_id" class="form-label">Produit planté :</label>
+            <select name="produit_id" id="produit_id" class="form-select" required>
+                {% for produit in produits %}
+                    <option value="{{ produit.id }}"
+                        {% if produit.id | string == plantation.produit_id | string %}selected{% endif %}>
+                        {{ produit.libelle }} (ID: {{ produit.id }})
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="date_plantation" class="form-label">Date de plantation :</label>
+            <input type="date" name="date_plantation" id="date_plantation"
+                   class="form-control"
+                   value="{{ plantation.date_plantation_formatee }}" required>
+        </div>
+
+        <button type="submit"  class="btn btn-success">Modifier</button>
+        <a href="/plantation/show" class="btn btn-outline-danger">Annuler</a>
+    </form>
+</div>
+{% endblock %}
