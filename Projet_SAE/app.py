@@ -289,21 +289,26 @@ def delete_produit():
     print(request.args.get('id'))
     return redirect('/produit/show')
 
+
 @app.route('/produit/edit', methods=['GET'])
 def edit_produit():
     print('''affichage du formulaire pour modifier un produit''')
-    print(request.args)
-    print(request.args.get('id'))
-    id=request.args.get('id')
+    id = request.args.get('id')
     mycursor = get_db().cursor()
-    sql=''' SELECT id_produit AS id, libelle_produit AS libelle, prix_produit AS prix, categorie_id, periode_plantation_optimale AS plantation, periode_recolte_optimale AS recolte
-    FROM produit
-    WHERE id_produit=%s;'''
-    tuple_param=(id)
-    mycursor.execute(sql,tuple_param)
+    sql_produit = ''' SELECT id_produit                  AS id, 
+                             libelle_produit             AS libelle, 
+                             prix_produit                AS prix, 
+                             categorie_id, 
+                             periode_plantation_optimale AS plantation, 
+                             periode_recolte_optimale    AS recolte
+                      FROM produit
+                      WHERE id_produit = %s;'''
+    mycursor.execute(sql_produit, (id))
     produit = mycursor.fetchone()
-    return render_template('produit/edit_produit.html', produit=produit)
-
+    sql_categories = "SELECT id_categorie AS id, libelle_categorie AS libelle FROM categorie;"
+    mycursor.execute(sql_categories)
+    liste_categories = mycursor.fetchall()
+    return render_template('produit/edit_produit.html', produit=produit, categorie=liste_categories)
 
 @app.route('/produit/add', methods=['POST'])
 def valid_add_produit():
@@ -332,7 +337,7 @@ def valid_edit_produit():
     categorie_id = request.form.get('categorie_id')
     plantation = request.form.get('plantation')
     recolte = request.form.get('recolte')
-    message = 'modification d\'un produit' + 'libelle : ' + libelle + ' --- prix : ' + prix + ' --- periode de plantation optimal : ' + plantation + ' --- periode de recolte optimale : ' + recolte + ' --- pour le produit d identifiant : ' + id
+    message = 'modification d\'un produit ' + 'libelle : ' + libelle + ' --- prix : ' + prix + ' --- periode de plantation optimal : ' + plantation + ' --- periode de recolte optimale : ' + recolte + ' --- pour le produit d identifiant : ' + id + ' --- categorie id : ' + categorie_id
     print(message)
     flash(message, 'alert-success')
     mycursor = get_db().cursor()
