@@ -31,8 +31,8 @@
         {% for produit in produits %}
             <tr>
                 <td><span class="badge rounded-pill" style="background-color:#28a745; color:white;">{{ produit.id }}</span></td>
-                <td><span class="badge rounded-pill" style="background-color:#dc3545; color:white;">{{ produit.libelle }}</span></td>
-                <td><span class="badge rounded-pill" style="background-color:#dc3545; color:white;">{{ produit.prix }}</span></td>
+                <td><span class="badge rounded-pill" style="background-color:#1838F0; color:white;">{{ produit.libelle }}</span></td>
+                <td><span class="badge rounded-pill" style="background-color:#1838F0; color:white;">{{ produit.prix }}</span></td>
                 <td><span class="badge rounded-pill" style="color: black">{{ produit.recolte }}</span></td>
                 <td><span class="badge rounded-pill" style="color: black">{{ produit.plantation }}</span></td>
                 <td><span class="badge rounded-pill" style="background-color:#dc3545; color:white;">{{ produit.categorie_id }}</span></td>
@@ -48,5 +48,6 @@
 {% else %}
     <h2 class="alert alert-info m-3"> La liste des produits est vide</h2>
 {% endif %}
+
 
 {% endblock %}
