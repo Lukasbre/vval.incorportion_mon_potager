@@ -13,10 +13,10 @@ app.secret_key = 'une cle(token) : grain de sel(any random string)'
 def get_db():
     if 'db' not in g:
         g.db = pymysql.connect(
-            host="192.168.128.152",
-            user="adam",
-            password="azerty",
-            database="BDD_abajic",
+            host="serveurmysql",
+            user="lbendiaf",
+            password="secret",
+            database="BDD_lbendiaf",
             charset='utf8mb4',
             cursorclass=pymysql.cursors.DictCursor
         )
@@ -274,19 +274,26 @@ def add_produit():
     liste_categories = mycursor.fetchall()
     return render_template('produit/add_produit.html', categorie=liste_categories)
 
+
 @app.route('/produit/delete')
 def delete_produit():
-    id=request.args.get('id',0)
-    message = 'suppression du produit : ' + id
-    print(message)
-    flash(message, 'alert-warning')
+    id = request.args.get('id')
     mycursor = get_db().cursor()
-    tuple_param=(id)
-    sql="DELETE FROM produit WHERE id_produit=%s;"
-    mycursor.execute(sql,tuple_param)
+    tuple_param = (id,)
+
+    mycursor.execute("DELETE FROM classe_dans WHERE produit_id=%s", (id,))
+    mycursor.execute("DELETE FROM est_plante WHERE produit_id=%s", (id,))
+    mycursor.execute("DELETE FROM est_recolte WHERE produit_id=%s", (id,))
+    mycursor.execute("DELETE FROM produit WHERE id_produit=%s", (id,))
+    sql = "DELETE FROM produit WHERE id_produit=%s;"
+
+    mycursor.execute(sql, tuple_param)
+
+    message = 'suppression du produit : ' + id
+    flash(message, 'alert-warning')
+
     get_db().commit()
-    print(request.args)
-    print(request.args.get('id'))
+
     return redirect('/produit/show')
 
 

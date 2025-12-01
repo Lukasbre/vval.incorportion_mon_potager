@@ -12,13 +12,13 @@
     <form method="post" action="/action/edit_validation">
         <input type="hidden" name="id_action" value="{{ action.id_action }}">
 
-        <div class="col-md-8 mb-3">
+        <div class="form-group">
             <div class="col-md-12 mb-3">
                 <label for="libelle_action" class="form-label">Libellé *</label>
                 <input type="text" id="libelle_action" name="libelle_action" class="form-control" value="{{ action.libelle_action }}" required>
             </div>
 
-            <div class="col-md-6 mb-3">
+            <div class="form-group">
                 <label for="type_action_id" class="form-label">Type</label>
                 <select id="type_action_id" name="type_action_id" class="form-select" required>
                     {% for t in types %}
@@ -29,7 +29,7 @@
                 </select>
             </div>
 
-            <div class="col-md-6 mb-3">
+            <div class="form-group">
                 <label for="parcelle_id" class="form-label">Parcelle *</label>
                 <select id="parcelle_id" name="parcelle_id" class="form-select" required>
                     {% for p in parcelles %}
@@ -40,7 +40,7 @@
                 </select>
             </div>
 
-            <div class="col-md-6 mb-3">
+            <div class="form-group">
                 <label for="date_action" class="form-label">Date</label>
                 <input type="date" id="date_action" name="date_action" class="form-control" value="{{ action.date_action }}" required>
             </div>
@@ -48,7 +48,7 @@
 
         <div class="mt-3">
             <button type="submit" class="btn btn-success me-3">Enregistrer</button>
-            <a href="/action" class="btn btn-secondary">Retour</a>
+            <a href="/action/show" class="btn btn-secondary">Retour</a>
         </div>
     </form>
 </div>

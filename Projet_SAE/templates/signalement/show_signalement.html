@@ -1,12 +1,14 @@
 {% extends 'layout.html' %}
-
+{% block title %}
+    <title>Tableau de signalement</title>
+{% endblock %}
 {% block body %}
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h1>Signalements</h1>
         <div class="d-flex gap-2">
-            <a class="btn btn-outline-primary" href="{{ url_for('calcul_signalement') }}">Statistiques</a>
-            <a class="btn btn-success" href="{{ url_for('add_signalement') }}">Ajouter un signalement</a>
+            <a class="btn btn-outline-primary" href="/signalement/calcul">Statistiques</a>
+            <a class="btn btn-success" href="/signalement/add">Ajouter un signalement</a>
         </div>
     </div>
 
